@@ -1,30 +1,6 @@
--- phpMyAdmin SQL Dump
--- version 4.5.2
--- http://www.phpmyadmin.net
---
--- Хост: localhost
--- Время создания: Дек 14 2015 г., 02:23
--- Версия сервера: 5.5.41-log
--- Версия PHP: 5.5.19
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
---
 -- База данных: `dbOlympicGames`
 --
 
--- --------------------------------------------------------
-
---
--- Структура таблицы `cities`
---
 
 CREATE TABLE `cities` (
   `cityID` int(11) NOT NULL,
@@ -32,68 +8,37 @@ CREATE TABLE `cities` (
   `countryID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Дамп данных таблицы `cities`
---
 
-INSERT INTO `cities` (`cityID`, `name`, `countryID`) VALUES
-(1, 'Sochi', 1);
 
--- --------------------------------------------------------
-
---
--- Структура таблицы `countries`
---
 
 CREATE TABLE `countries` (
   `countryID` int(11) NOT NULL,
   `name` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Дамп данных таблицы `countries`
---
 
-INSERT INTO `countries` (`countryID`, `name`) VALUES
-(1, 'Russia');
 
--- --------------------------------------------------------
-
---
--- Структура таблицы `olympicGames`
---
 
 CREATE TABLE `olympicGames` (
   `olympicGameID` int(11) NOT NULL,
-  `name` enum('winter','summer','','') NOT NULL,
+  `name` enum('winter','summer') NOT NULL,
   `cityID` int(11) NOT NULL,
   `year` int(11) NOT NULL,
   `sequnce` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Дамп данных таблицы `olympicGames`
---
 
-INSERT INTO `olympicGames` (`olympicGameID`, `name`, `cityID`, `year`, `sequnce`) VALUES
-(1, 'winter', 1, 2014, 22);
+-- INSERT INTO `olympicGames` (`olympicGameID`, `name`, `cityID`, `year`, `sequnce`) VALUES
+-- (1, 'winter', 1, 2014, 22);
 
--- --------------------------------------------------------
 
---
--- Структура таблицы `olympicGamesDiciplines`
---
+
 
 CREATE TABLE `olympicGamesDiciplines` (
   `olympicGameID` int(11) NOT NULL,
   `diciplineID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
---
--- Структура таблицы `olympicGamesLogos`
---
 
 CREATE TABLE `olympicGamesLogos` (
   `olympicGameID` int(11) NOT NULL,
@@ -101,11 +46,6 @@ CREATE TABLE `olympicGamesLogos` (
   `imageLogo` blob NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
---
--- Структура таблицы `olympicGamesParticipants`
---
 
 CREATE TABLE `olympicGamesParticipants` (
   `olympicGameID` int(11) NOT NULL,
@@ -114,41 +54,22 @@ CREATE TABLE `olympicGamesParticipants` (
   `diciplineID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
 
---
--- Структура таблицы `olympicGamesSponsors`
---
+
 
 CREATE TABLE `olympicGamesSponsors` (
   `olympicGameID` int(11) NOT NULL,
   `sponsorID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Дамп данных таблицы `olympicGamesSponsors`
---
 
-INSERT INTO `olympicGamesSponsors` (`olympicGameID`, `sponsorID`) VALUES
-(1, 1),
-(1, 2);
 
--- --------------------------------------------------------
-
---
--- Структура таблицы `olympicTalismanLogos`
---
 
 CREATE TABLE `olympicTalismanLogos` (
   `olympicTalismanID` int(11) NOT NULL,
   `image` blob NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
---
--- Структура таблицы `olympicTalismans`
---
 
 CREATE TABLE `olympicTalismans` (
   `olympicTalismanID` int(11) NOT NULL,
@@ -157,11 +78,31 @@ CREATE TABLE `olympicTalismans` (
   `olympicGameID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
 
---
--- Структура таблицы `personAwards`
---
+CREATE TABLE `otherDocument` (
+  `documentID` int(11) NOT NULL,
+  `title` varchar(200) NOT NULL,
+  `date` date NOT NULL,
+  `priority` int(11) NOT NULL,
+  `dbLoadingDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+
+CREATE TABLE `otherDocumentContent` (
+  `documentID` int(11) NOT NULL,
+  `content` blob NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+
+CREATE TABLE `otherDocumentEvent` (
+  `documentID` int(11) NOT NULL,
+  `eventID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 CREATE TABLE `personAwards` (
   `awardID` int(11) NOT NULL,
@@ -169,11 +110,8 @@ CREATE TABLE `personAwards` (
   `diciplineID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
 
---
--- Структура таблицы `personAwardsHistory`
---
+
 
 CREATE TABLE `personAwardsHistory` (
   `personID` int(11) NOT NULL,
@@ -182,11 +120,8 @@ CREATE TABLE `personAwardsHistory` (
   `currency` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
 
---
--- Структура таблицы `personDiciplinesHistory`
---
+
 
 CREATE TABLE `personDiciplinesHistory` (
   `personID` int(11) NOT NULL,
@@ -195,11 +130,16 @@ CREATE TABLE `personDiciplinesHistory` (
   `endDate` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
 
---
--- Структура таблицы `personInfoHistory`
---
+CREATE TABLE `persondisqhstr` (
+  `personID` int(11) NOT NULL,
+  `startDate` date NOT NULL,
+  `endDate` date DEFAULT NULL,
+  `disqComment` text
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
 
 CREATE TABLE `personInfoHistory` (
   `personInfoID` int(11) NOT NULL,
@@ -211,11 +151,8 @@ CREATE TABLE `personInfoHistory` (
   `modifiedDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
 
---
--- Структура таблицы `personInjuries`
---
+
 
 CREATE TABLE `personInjuries` (
   `injuryID` int(11) NOT NULL,
@@ -223,11 +160,8 @@ CREATE TABLE `personInjuries` (
   `injuryName` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
 
---
--- Структура таблицы `personInjuriesHistory`
---
+
 
 CREATE TABLE `personInjuriesHistory` (
   `injuryID` int(11) NOT NULL,
@@ -237,26 +171,20 @@ CREATE TABLE `personInjuriesHistory` (
   `injuryComment` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
 
---
--- Структура таблицы `persons`
---
+
 
 CREATE TABLE `persons` (
   `personID` int(11) NOT NULL,
   `firstName` int(11) NOT NULL,
   `lastName` int(11) NOT NULL,
   `middleName` int(11) DEFAULT NULL,
-  `gender` enum('m','w','','') NOT NULL,
+  `gender` enum('m','w') NOT NULL,
   `dateBirth` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
 
---
--- Структура таблицы `sponsors`
---
+
 
 CREATE TABLE `sponsors` (
   `sponsorID` int(11) NOT NULL,
@@ -264,19 +192,11 @@ CREATE TABLE `sponsors` (
   `tagline` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Дамп данных таблицы `sponsors`
---
 
-INSERT INTO `sponsors` (`sponsorID`, `name`, `tagline`) VALUES
-(1, 'Nike', 'Just do it!'),
-(2, 'LG', 'Life is Good');
-
--- --------------------------------------------------------
 
 --
--- Структура таблицы `sportapplications`
---
+-- INSERT INTO `sponsors` (`sponsorID`, `name`, `tagline`) VALUES
+
 
 CREATE TABLE `sportapplications` (
   `applicationID` int(11) NOT NULL,
@@ -286,11 +206,8 @@ CREATE TABLE `sportapplications` (
   `countryID` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
 
---
--- Структура таблицы `sportCompetitions`
---
+
 
 CREATE TABLE `sportCompetitions` (
   `sportCompetitionID` int(11) NOT NULL,
@@ -298,11 +215,6 @@ CREATE TABLE `sportCompetitions` (
   `sportDiciplineID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
---
--- Структура таблицы `sportDiciplines`
---
 
 CREATE TABLE `sportDiciplines` (
   `sportDiciplineID` int(11) NOT NULL,
@@ -310,38 +222,27 @@ CREATE TABLE `sportDiciplines` (
   `sportKindID` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
---
--- Структура таблицы `sportEvents`
---
 
 CREATE TABLE `sportEvents` (
   `sportEventID` int(11) NOT NULL,
   `competitionID` int(11) NOT NULL,
   `competitionPlaceID` int(11) NOT NULL,
-  `stage` enum('qualification','final','','') NOT NULL,
+  `stage` enum('qualification','final') NOT NULL,
   `date` date NOT NULL,
   `timeStart` time NOT NULL,
   `timeEnd` time DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
 
---
--- Структура таблицы `sportKinds`
---
+
 
 CREATE TABLE `sportKinds` (
   `sportKindsID` int(11) NOT NULL,
   `name` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
 
---
--- Структура таблицы `sportObjectAddresses`
---
+
 
 CREATE TABLE `sportObjectAddresses` (
   `sportObjectID` int(11) NOT NULL,
@@ -354,11 +255,6 @@ CREATE TABLE `sportObjectAddresses` (
   `latitude` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
---
--- Структура таблицы `sportObjectPlaces`
---
 
 CREATE TABLE `sportObjectPlaces` (
   `sportObjectPlaceID` int(11) NOT NULL,
@@ -368,11 +264,8 @@ CREATE TABLE `sportObjectPlaces` (
   `name` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
 
---
--- Структура таблицы `sportObjects`
---
+
 
 CREATE TABLE `sportObjects` (
   `sportObjectID` int(11) NOT NULL,
@@ -382,11 +275,8 @@ CREATE TABLE `sportObjects` (
   `olympicGamesID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
 
---
--- Структура таблицы `sportResults`
---
+
 
 CREATE TABLE `sportResults` (
   `applicationID` int(11) NOT NULL,
@@ -394,26 +284,22 @@ CREATE TABLE `sportResults` (
   `place` int(11) NOT NULL,
   `isDisq` char(2) DEFAULT NULL,
   `isFail` char(2) DEFAULT NULL,
-  `typeWin` enum('win','lose','draw','') DEFAULT NULL,
-  `failComment` varchar(200) DEFAULT NULL
+  `typeWin` enum('win','lose','draw') DEFAULT NULL,
+  `failComment` varchar(200) DEFAULT NULL,
+  `medalType` enum('gold','silver','brons') DEFAULT NULL,
+  `isOlympicRecord` char(2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
 
---
--- Структура таблицы `tvChannels`
---
+
 
 CREATE TABLE `tvChannels` (
   `tvChannelID` int(11) NOT NULL,
   `name` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
 
---
--- Структура таблицы `tvChannelsBroadcasts`
---
+
 
 CREATE TABLE `tvChannelsBroadcasts` (
   `tvChannelsBroadcastID` int(11) NOT NULL,
@@ -425,11 +311,69 @@ CREATE TABLE `tvChannelsBroadcasts` (
   `isLive` char(2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
 
---
--- Структура таблицы `weatherConditions`
---
+
+
+CREATE TABLE `uActions` (
+  `actionID` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `userID` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+
+CREATE TABLE `uLanguages` (
+  `languageID` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+
+CREATE TABLE `uRoleActions` (
+  `roleID` int(11) NOT NULL,
+  `actionID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+
+CREATE TABLE `uRoles` (
+  `roleID` int(11) NOT NULL,
+  `name` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+
+CREATE TABLE `userLanguage` (
+  `userID` int(11) NOT NULL,
+  `languageID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+
+CREATE TABLE `userRoles` (
+  `userID` int(11) NOT NULL,
+  `roleID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+
+CREATE TABLE `users` (
+  `userID` int(11) NOT NULL,
+  `login` varchar(50) NOT NULL,
+  `password` varchar(50) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `dateBirth` date NOT NULL,
+  `dateRegistration` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
 
 CREATE TABLE `weatherConditions` (
   `eventID` int(11) NOT NULL,
@@ -442,17 +386,17 @@ CREATE TABLE `weatherConditions` (
   `date` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
 --
 -- Индексы сохранённых таблиц
 --
 
---
--- Индексы таблицы `cities`
---
+
 ALTER TABLE `cities`
   ADD PRIMARY KEY (`cityID`),
   ADD KEY `countryID` (`countryID`),
   ADD KEY `name` (`name`);
+
 
 --
 -- Индексы таблицы `countries`
@@ -461,12 +405,15 @@ ALTER TABLE `countries`
   ADD PRIMARY KEY (`countryID`),
   ADD KEY `name` (`name`);
 
+
 --
 -- Индексы таблицы `olympicGames`
 --
 ALTER TABLE `olympicGames`
   ADD PRIMARY KEY (`olympicGameID`),
+  ADD UNIQUE KEY `sequnce` (`sequnce`),
   ADD KEY `cityID` (`cityID`);
+
 
 --
 -- Индексы таблицы `olympicGamesDiciplines`
@@ -475,11 +422,13 @@ ALTER TABLE `olympicGamesDiciplines`
   ADD PRIMARY KEY (`olympicGameID`,`diciplineID`),
   ADD KEY `diciplineID` (`diciplineID`);
 
+
 --
 -- Индексы таблицы `olympicGamesLogos`
 --
 ALTER TABLE `olympicGamesLogos`
   ADD PRIMARY KEY (`olympicGameID`);
+
 
 --
 -- Индексы таблицы `olympicGamesParticipants`
@@ -490,6 +439,7 @@ ALTER TABLE `olympicGamesParticipants`
   ADD KEY `diciplineID` (`diciplineID`),
   ADD KEY `personID` (`personID`);
 
+
 --
 -- Индексы таблицы `olympicGamesSponsors`
 --
@@ -497,11 +447,13 @@ ALTER TABLE `olympicGamesSponsors`
   ADD PRIMARY KEY (`olympicGameID`,`sponsorID`),
   ADD KEY `sponsorID` (`sponsorID`);
 
+
 --
 -- Индексы таблицы `olympicTalismanLogos`
 --
 ALTER TABLE `olympicTalismanLogos`
   ADD PRIMARY KEY (`olympicTalismanID`);
+
 
 --
 -- Индексы таблицы `olympicTalismans`
@@ -510,19 +462,45 @@ ALTER TABLE `olympicTalismans`
   ADD PRIMARY KEY (`olympicTalismanID`),
   ADD KEY `olympicGameID` (`olympicGameID`);
 
+
+--
+-- Индексы таблицы `otherDocument`
+--
+ALTER TABLE `otherDocument`
+  ADD PRIMARY KEY (`documentID`);
+
+
+--
+-- Индексы таблицы `otherDocumentContent`
+--
+ALTER TABLE `otherDocumentContent`
+  ADD PRIMARY KEY (`documentID`);
+
+
+--
+-- Индексы таблицы `otherDocumentEvent`
+--
+ALTER TABLE `otherDocumentEvent`
+  ADD PRIMARY KEY (`documentID`,`eventID`),
+  ADD KEY `eventID` (`eventID`);
+
+
 --
 -- Индексы таблицы `personAwards`
 --
 ALTER TABLE `personAwards`
   ADD PRIMARY KEY (`awardID`),
+  ADD UNIQUE KEY `name` (`name`),
   ADD KEY `diciplineID` (`diciplineID`);
+
 
 --
 -- Индексы таблицы `personAwardsHistory`
 --
 ALTER TABLE `personAwardsHistory`
-  ADD PRIMARY KEY (`personID`,`awardID`,`date`),
-  ADD KEY `awardID` (`awardID`);
+  ADD PRIMARY KEY (`awardID`,`date`) USING BTREE,
+  ADD KEY `personID` (`personID`);
+
 
 --
 -- Индексы таблицы `personDiciplinesHistory`
@@ -531,6 +509,14 @@ ALTER TABLE `personDiciplinesHistory`
   ADD PRIMARY KEY (`personID`,`diciplineID`,`startDate`),
   ADD KEY `diciplineID` (`diciplineID`);
 
+
+--
+-- Индексы таблицы `persondisqhstr`
+--
+ALTER TABLE `persondisqhstr`
+  ADD PRIMARY KEY (`personID`,`startDate`);
+
+
 --
 -- Индексы таблицы `personInfoHistory`
 --
@@ -538,11 +524,13 @@ ALTER TABLE `personInfoHistory`
   ADD PRIMARY KEY (`personInfoID`),
   ADD KEY `personID` (`personID`);
 
+
 --
 -- Индексы таблицы `personInjuries`
 --
 ALTER TABLE `personInjuries`
   ADD PRIMARY KEY (`injuryID`);
+
 
 --
 -- Индексы таблицы `personInjuriesHistory`
@@ -551,6 +539,7 @@ ALTER TABLE `personInjuriesHistory`
   ADD PRIMARY KEY (`injuryID`,`personID`,`dateStart`),
   ADD KEY `personID` (`personID`);
 
+
 --
 -- Индексы таблицы `persons`
 --
@@ -558,11 +547,13 @@ ALTER TABLE `persons`
   ADD PRIMARY KEY (`personID`),
   ADD KEY `firstName` (`firstName`);
 
+
 --
 -- Индексы таблицы `sponsors`
 --
 ALTER TABLE `sponsors`
   ADD PRIMARY KEY (`sponsorID`);
+
 
 --
 -- Индексы таблицы `sportapplications`
@@ -574,6 +565,7 @@ ALTER TABLE `sportapplications`
   ADD KEY `personID` (`personID`),
   ADD KEY `countryID` (`countryID`);
 
+
 --
 -- Индексы таблицы `sportCompetitions`
 --
@@ -582,6 +574,7 @@ ALTER TABLE `sportCompetitions`
   ADD KEY `sportDiciplineID` (`sportDiciplineID`),
   ADD KEY `name` (`name`);
 
+
 --
 -- Индексы таблицы `sportDiciplines`
 --
@@ -589,6 +582,7 @@ ALTER TABLE `sportDiciplines`
   ADD PRIMARY KEY (`sportDiciplineID`),
   ADD KEY `sportKindID` (`sportKindID`),
   ADD KEY `name` (`name`);
+
 
 --
 -- Индексы таблицы `sportEvents`
@@ -600,12 +594,14 @@ ALTER TABLE `sportEvents`
   ADD KEY `stage` (`stage`),
   ADD KEY `date` (`date`);
 
+
 --
 -- Индексы таблицы `sportKinds`
 --
 ALTER TABLE `sportKinds`
   ADD PRIMARY KEY (`sportKindsID`),
   ADD KEY `name` (`name`);
+
 
 --
 -- Индексы таблицы `sportObjectAddresses`
@@ -614,12 +610,14 @@ ALTER TABLE `sportObjectAddresses`
   ADD PRIMARY KEY (`sportObjectID`),
   ADD KEY `cityID` (`cityID`);
 
+
 --
 -- Индексы таблицы `sportObjectPlaces`
 --
 ALTER TABLE `sportObjectPlaces`
   ADD PRIMARY KEY (`sportObjectPlaceID`),
   ADD KEY `sportObjectID` (`sportObjectID`);
+
 
 --
 -- Индексы таблицы `sportObjects`
@@ -629,11 +627,13 @@ ALTER TABLE `sportObjects`
   ADD KEY `name` (`name`),
   ADD KEY `olympicGamesID` (`olympicGamesID`);
 
+
 --
 -- Индексы таблицы `sportResults`
 --
 ALTER TABLE `sportResults`
   ADD PRIMARY KEY (`applicationID`);
+
 
 --
 -- Индексы таблицы `tvChannels`
@@ -641,6 +641,7 @@ ALTER TABLE `sportResults`
 ALTER TABLE `tvChannels`
   ADD PRIMARY KEY (`tvChannelID`),
   ADD KEY `name` (`name`);
+
 
 --
 -- Индексы таблицы `tvChannelsBroadcasts`
@@ -650,15 +651,75 @@ ALTER TABLE `tvChannelsBroadcasts`
   ADD KEY `tvChannelID` (`tvChannelID`),
   ADD KEY `eventID` (`eventID`);
 
+
+--
+-- Индексы таблицы `uActions`
+--
+ALTER TABLE `uActions`
+  ADD PRIMARY KEY (`actionID`),
+  ADD UNIQUE KEY `name` (`name`),
+  ADD KEY `userID` (`userID`);
+
+
+--
+-- Индексы таблицы `uLanguages`
+--
+ALTER TABLE `uLanguages`
+  ADD PRIMARY KEY (`languageID`),
+  ADD UNIQUE KEY `name` (`name`);
+
+
+--
+-- Индексы таблицы `uRoleActions`
+--
+ALTER TABLE `uRoleActions`
+  ADD PRIMARY KEY (`roleID`,`actionID`),
+  ADD KEY `actionID` (`actionID`);
+
+
+--
+-- Индексы таблицы `uRoles`
+--
+ALTER TABLE `uRoles`
+  ADD PRIMARY KEY (`roleID`),
+  ADD UNIQUE KEY `name` (`name`);
+
+
+--
+-- Индексы таблицы `userLanguage`
+--
+ALTER TABLE `userLanguage`
+  ADD PRIMARY KEY (`userID`,`languageID`),
+  ADD KEY `languageID` (`languageID`);
+
+
+--
+-- Индексы таблицы `userRoles`
+--
+ALTER TABLE `userRoles`
+  ADD PRIMARY KEY (`userID`,`roleID`),
+  ADD KEY `roleID` (`roleID`);
+
+
+--
+-- Индексы таблицы `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`userID`),
+  ADD UNIQUE KEY `login` (`login`);
+
+
 --
 -- Индексы таблицы `weatherConditions`
 --
 ALTER TABLE `weatherConditions`
   ADD PRIMARY KEY (`eventID`);
 
+
 --
 -- AUTO_INCREMENT для сохранённых таблиц
 --
+
 
 --
 -- AUTO_INCREMENT для таблицы `cities`
@@ -685,6 +746,11 @@ ALTER TABLE `olympicGamesLogos`
 --
 ALTER TABLE `olympicTalismans`
   MODIFY `olympicTalismanID` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT для таблицы `otherDocument`
+--
+ALTER TABLE `otherDocument`
+  MODIFY `documentID` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT для таблицы `personAwards`
 --
@@ -756,8 +822,29 @@ ALTER TABLE `tvChannels`
 ALTER TABLE `tvChannelsBroadcasts`
   MODIFY `tvChannelsBroadcastID` int(11) NOT NULL AUTO_INCREMENT;
 --
+-- AUTO_INCREMENT для таблицы `uActions`
+--
+ALTER TABLE `uActions`
+  MODIFY `actionID` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT для таблицы `uLanguages`
+--
+ALTER TABLE `uLanguages`
+  MODIFY `languageID` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT для таблицы `uRoles`
+--
+ALTER TABLE `uRoles`
+  MODIFY `roleID` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT для таблицы `users`
+--
+ALTER TABLE `users`
+  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT;
+--
 -- Ограничения внешнего ключа сохраненных таблиц
 --
+
 
 --
 -- Ограничения внешнего ключа таблицы `cities`
@@ -765,12 +852,12 @@ ALTER TABLE `tvChannelsBroadcasts`
 ALTER TABLE `cities`
   ADD CONSTRAINT `cities_ibfk_1` FOREIGN KEY (`countryID`) REFERENCES `countries` (`countryID`) ON UPDATE CASCADE;
 
+
 --
 -- Ограничения внешнего ключа таблицы `olympicGames`
 --
 ALTER TABLE `olympicGames`
   ADD CONSTRAINT `olympicgames_ibfk_1` FOREIGN KEY (`cityID`) REFERENCES `cities` (`cityID`) ON UPDATE CASCADE;
-
 --
 -- Ограничения внешнего ключа таблицы `olympicGamesDiciplines`
 --
@@ -778,11 +865,13 @@ ALTER TABLE `olympicGamesDiciplines`
   ADD CONSTRAINT `olympicgamesdiciplines_ibfk_2` FOREIGN KEY (`diciplineID`) REFERENCES `sportDiciplines` (`sportDiciplineID`) ON UPDATE CASCADE,
   ADD CONSTRAINT `olympicgamesdiciplines_ibfk_1` FOREIGN KEY (`olympicGameID`) REFERENCES `olympicGames` (`olympicGameID`) ON UPDATE CASCADE;
 
+
 --
 -- Ограничения внешнего ключа таблицы `olympicGamesLogos`
 --
 ALTER TABLE `olympicGamesLogos`
   ADD CONSTRAINT `olympicgameslogos_ibfk_1` FOREIGN KEY (`olympicGameID`) REFERENCES `olympicGames` (`olympicGameID`) ON UPDATE CASCADE;
+
 
 --
 -- Ограничения внешнего ключа таблицы `olympicGamesParticipants`
@@ -793,12 +882,14 @@ ALTER TABLE `olympicGamesParticipants`
   ADD CONSTRAINT `olympicgamesparticipants_ibfk_2` FOREIGN KEY (`personID`) REFERENCES `persons` (`personID`) ON UPDATE CASCADE,
   ADD CONSTRAINT `olympicgamesparticipants_ibfk_3` FOREIGN KEY (`countryID`) REFERENCES `countries` (`countryID`) ON UPDATE CASCADE;
 
+
 --
 -- Ограничения внешнего ключа таблицы `olympicGamesSponsors`
 --
 ALTER TABLE `olympicGamesSponsors`
   ADD CONSTRAINT `olympicgamessponsors_ibfk_2` FOREIGN KEY (`sponsorID`) REFERENCES `sponsors` (`sponsorID`) ON UPDATE CASCADE,
   ADD CONSTRAINT `olympicgamessponsors_ibfk_1` FOREIGN KEY (`olympicGameID`) REFERENCES `olympicGames` (`olympicGameID`) ON UPDATE CASCADE;
+
 
 --
 -- Ограничения внешнего ключа таблицы `olympicTalismans`
@@ -807,18 +898,36 @@ ALTER TABLE `olympicTalismans`
   ADD CONSTRAINT `olympictalismans_ibfk_2` FOREIGN KEY (`olympicTalismanID`) REFERENCES `olympicTalismanLogos` (`olympicTalismanID`) ON UPDATE CASCADE,
   ADD CONSTRAINT `olympictalismans_ibfk_1` FOREIGN KEY (`olympicGameID`) REFERENCES `olympicGames` (`olympicGameID`);
 
+
+--
+-- Ограничения внешнего ключа таблицы `otherDocumentContent`
+--
+ALTER TABLE `otherDocumentContent`
+  ADD CONSTRAINT `otherdocumentcontent_ibfk_1` FOREIGN KEY (`documentID`) REFERENCES `otherDocument` (`documentID`) ON UPDATE CASCADE;
+
+
+--
+-- Ограничения внешнего ключа таблицы `otherDocumentEvent`
+--
+ALTER TABLE `otherDocumentEvent`
+  ADD CONSTRAINT `otherdocumentevent_ibfk_2` FOREIGN KEY (`eventID`) REFERENCES `sportEvents` (`sportEventID`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `otherdocumentevent_ibfk_1` FOREIGN KEY (`documentID`) REFERENCES `otherDocument` (`documentID`) ON UPDATE CASCADE;
+
+
 --
 -- Ограничения внешнего ключа таблицы `personAwards`
 --
 ALTER TABLE `personAwards`
   ADD CONSTRAINT `personawards_ibfk_1` FOREIGN KEY (`diciplineID`) REFERENCES `sportDiciplines` (`sportDiciplineID`) ON UPDATE CASCADE;
 
+
 --
 -- Ограничения внешнего ключа таблицы `personAwardsHistory`
 --
 ALTER TABLE `personAwardsHistory`
-  ADD CONSTRAINT `personawardshistory_ibfk_2` FOREIGN KEY (`awardID`) REFERENCES `personAwards` (`awardID`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `personawardshistory_ibfk_1` FOREIGN KEY (`personID`) REFERENCES `persons` (`personID`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `personawardshistory_ibfk_3` FOREIGN KEY (`personID`) REFERENCES `persons` (`personID`),
+  ADD CONSTRAINT `personawardshistory_ibfk_2` FOREIGN KEY (`awardID`) REFERENCES `personAwards` (`awardID`) ON UPDATE CASCADE;
+
 
 --
 -- Ограничения внешнего ключа таблицы `personDiciplinesHistory`
@@ -827,11 +936,20 @@ ALTER TABLE `personDiciplinesHistory`
   ADD CONSTRAINT `persondiciplineshistory_ibfk_1` FOREIGN KEY (`personID`) REFERENCES `persons` (`personID`) ON UPDATE CASCADE,
   ADD CONSTRAINT `persondiciplineshistory_ibfk_2` FOREIGN KEY (`diciplineID`) REFERENCES `sportDiciplines` (`sportDiciplineID`) ON UPDATE CASCADE;
 
+
+--
+-- Ограничения внешнего ключа таблицы `persondisqhstr`
+--
+ALTER TABLE `persondisqhstr`
+  ADD CONSTRAINT `persondisqhstr_ibfk_1` FOREIGN KEY (`personID`) REFERENCES `persons` (`personID`) ON UPDATE CASCADE;
+
+
 --
 -- Ограничения внешнего ключа таблицы `personInfoHistory`
 --
 ALTER TABLE `personInfoHistory`
   ADD CONSTRAINT `personinfohistory_ibfk_1` FOREIGN KEY (`personID`) REFERENCES `persons` (`personID`) ON UPDATE CASCADE;
+
 
 --
 -- Ограничения внешнего ключа таблицы `personInjuriesHistory`
@@ -840,14 +958,16 @@ ALTER TABLE `personInjuriesHistory`
   ADD CONSTRAINT `personinjurieshistory_ibfk_2` FOREIGN KEY (`personID`) REFERENCES `persons` (`personID`) ON UPDATE CASCADE,
   ADD CONSTRAINT `personinjurieshistory_ibfk_1` FOREIGN KEY (`injuryID`) REFERENCES `personInjuries` (`injuryID`) ON UPDATE CASCADE;
 
+
 --
 -- Ограничения внешнего ключа таблицы `sportapplications`
 --
 ALTER TABLE `sportapplications`
   ADD CONSTRAINT `sportapplications_ibfk_4` FOREIGN KEY (`countryID`) REFERENCES `countries` (`countryID`),
-  ADD CONSTRAINT `sportapplications_ibfk_1` FOREIGN KEY (`parent_appID`) REFERENCES `applications` (`applicationID`) ON UPDATE CASCADE,
+  -- ADD CONSTRAINT `sportapplications_ibfk_1` FOREIGN KEY (`parent_appID`) REFERENCES `applications` (`applicationID`) ON UPDATE CASCADE,
   ADD CONSTRAINT `sportapplications_ibfk_2` FOREIGN KEY (`eventID`) REFERENCES `sportEvents` (`sportEventID`) ON UPDATE CASCADE,
   ADD CONSTRAINT `sportapplications_ibfk_3` FOREIGN KEY (`personID`) REFERENCES `persons` (`personID`) ON UPDATE CASCADE;
+
 
 --
 -- Ограничения внешнего ключа таблицы `sportCompetitions`
@@ -855,11 +975,13 @@ ALTER TABLE `sportapplications`
 ALTER TABLE `sportCompetitions`
   ADD CONSTRAINT `sportcompetitions_ibfk_1` FOREIGN KEY (`sportDiciplineID`) REFERENCES `sportDiciplines` (`sportDiciplineID`) ON UPDATE CASCADE;
 
+
 --
 -- Ограничения внешнего ключа таблицы `sportDiciplines`
 --
 ALTER TABLE `sportDiciplines`
   ADD CONSTRAINT `sportdiciplines_ibfk_1` FOREIGN KEY (`sportKindID`) REFERENCES `sportKinds` (`sportKindsID`) ON UPDATE CASCADE;
+
 
 --
 -- Ограничения внешнего ключа таблицы `sportEvents`
@@ -868,6 +990,7 @@ ALTER TABLE `sportEvents`
   ADD CONSTRAINT `sportevents_ibfk_2` FOREIGN KEY (`competitionPlaceID`) REFERENCES `sportObjectPlaces` (`sportObjectPlaceID`) ON UPDATE CASCADE,
   ADD CONSTRAINT `sportevents_ibfk_1` FOREIGN KEY (`competitionID`) REFERENCES `sportCompetitions` (`sportCompetitionID`) ON UPDATE CASCADE;
 
+
 --
 -- Ограничения внешнего ключа таблицы `sportObjectAddresses`
 --
@@ -875,11 +998,13 @@ ALTER TABLE `sportObjectAddresses`
   ADD CONSTRAINT `sportobjectaddresses_ibfk_2` FOREIGN KEY (`cityID`) REFERENCES `cities` (`cityID`) ON UPDATE CASCADE,
   ADD CONSTRAINT `sportobjectaddresses_ibfk_1` FOREIGN KEY (`sportObjectID`) REFERENCES `sportObjects` (`sportObjectID`) ON UPDATE CASCADE;
 
+
 --
 -- Ограничения внешнего ключа таблицы `sportObjectPlaces`
 --
 ALTER TABLE `sportObjectPlaces`
   ADD CONSTRAINT `sportobjectplaces_ibfk_1` FOREIGN KEY (`sportObjectID`) REFERENCES `sportObjects` (`sportObjectID`) ON UPDATE CASCADE;
+
 
 --
 -- Ограничения внешнего ключа таблицы `sportObjects`
@@ -887,11 +1012,13 @@ ALTER TABLE `sportObjectPlaces`
 ALTER TABLE `sportObjects`
   ADD CONSTRAINT `sportobjects_ibfk_1` FOREIGN KEY (`olympicGamesID`) REFERENCES `olympicGames` (`olympicGameID`) ON UPDATE CASCADE;
 
+
 --
 -- Ограничения внешнего ключа таблицы `sportResults`
 --
 ALTER TABLE `sportResults`
   ADD CONSTRAINT `sportresults_ibfk_1` FOREIGN KEY (`applicationID`) REFERENCES `sportapplications` (`applicationID`) ON UPDATE CASCADE;
+
 
 --
 -- Ограничения внешнего ключа таблицы `tvChannelsBroadcasts`
@@ -900,12 +1027,33 @@ ALTER TABLE `tvChannelsBroadcasts`
   ADD CONSTRAINT `tvchannelsbroadcasts_ibfk_2` FOREIGN KEY (`eventID`) REFERENCES `sportEvents` (`sportEventID`) ON UPDATE CASCADE,
   ADD CONSTRAINT `tvchannelsbroadcasts_ibfk_1` FOREIGN KEY (`tvChannelID`) REFERENCES `tvChannels` (`tvChannelID`) ON UPDATE CASCADE;
 
+
+--
+-- Ограничения внешнего ключа таблицы `uRoleActions`
+--
+ALTER TABLE `uRoleActions`
+  ADD CONSTRAINT `uroleactions_ibfk_2` FOREIGN KEY (`actionID`) REFERENCES `uActions` (`actionID`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `uroleactions_ibfk_1` FOREIGN KEY (`roleID`) REFERENCES `uRoles` (`roleID`) ON UPDATE CASCADE;
+
+
+--
+-- Ограничения внешнего ключа таблицы `userLanguage`
+--
+ALTER TABLE `userLanguage`
+  ADD CONSTRAINT `userlanguage_ibfk_2` FOREIGN KEY (`languageID`) REFERENCES `uLanguages` (`languageID`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `userlanguage_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `users` (`userID`) ON UPDATE CASCADE;
+
+
+--
+-- Ограничения внешнего ключа таблицы `userRoles`
+--
+ALTER TABLE `userRoles`
+  ADD CONSTRAINT `userroles_ibfk_2` FOREIGN KEY (`roleID`) REFERENCES `uRoles` (`roleID`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `userroles_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `users` (`userID`) ON UPDATE CASCADE;
+
+
 --
 -- Ограничения внешнего ключа таблицы `weatherConditions`
 --
 ALTER TABLE `weatherConditions`
   ADD CONSTRAINT `weatherconditions_ibfk_1` FOREIGN KEY (`eventID`) REFERENCES `sportEvents` (`sportEventID`) ON UPDATE CASCADE;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
